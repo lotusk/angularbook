@@ -1,0 +1,69 @@
+@(title: String)
+<!doctype html>
+<html ng-app="myapp">
+<head>
+    <script src="@routes.Assets.at("javascripts/angular.js")"></script>
+
+    <script>
+
+        var myAppModule=angular.module('myapp',[])
+
+         myAppModule.controller('StartUpController',function($scope,$http){
+
+            $scope.startingEstimate=0
+            <!--$scope.needed=0-->
+            $scope.computeNeeded=function(){
+                <!--alert("aaa")-->
+                $scope.needed =  $scope.startingEstimate * 10
+            }
+
+            $scope.requestFunding=function(){
+                window.alert("Sorry,please get more customers first.")
+            }
+            $scope.reset=function(){
+                <!--alert("hello")-->
+                $scope.startingEstimate=0
+            }
+
+            $scope.test=function(){
+                $http.get('/ajax/test',{params:{id:'5'}}).success(function(data,status,headers,config){
+                    alert(data)
+                })
+                return false;
+            }
+        })
+
+        myAppModule.directive('hello',function(){
+            return {
+                restrict:'E',
+                template:'<div>Hi there</div>',
+                replace:true
+            }
+        })
+
+        myAppModule.directive('hello2',function(){
+            return {
+                template:'<div>Hi there <span ng-transclude></span></div>',
+                transclude:true
+            }
+        })
+
+
+    </script>
+</head>
+<body ng-controller='StartUpController'>
+
+    <form ng-submit="requestFunding()" >
+        Starting1:<input ng-change="computeNeeded()" ng-model="startingEstimate">
+        Recommendation:{{needed}}
+        <button>Fund my startup!</button>
+        <button ng-click="reset()"> Reset</button>
+
+
+    </form>
+    <button ng-click="test()">test</button>
+    <hello></hello>
+    <div hello2>Bob</div>
+</body>
+</html>
+
